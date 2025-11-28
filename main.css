@@ -180,28 +180,12 @@ body {
     margin-bottom: 4rem;
 }
 
-.glitch-wrapper {
-    margin-bottom: 1rem;
-}
-
 .hero-title {
     font-size: 3.5rem;
     font-weight: 700;
     color: var(--primary);
     letter-spacing: 2px;
     margin-bottom: 0.5rem;
-}
-
-.glitch::before,
-.glitch::after {
-    display: none;
-}
-
-.hero-subtitle {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-    font-weight: 400;
 }
 
 .typing-text {
@@ -222,15 +206,6 @@ body {
 
 .terminal-box:focus-within {
     border-color: var(--primary);
-}
-
-.terminal-header {
-    background: rgba(168, 85, 247, 0.05);
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-bottom: 1px solid var(--border);
 }
 
 .terminal-dot {
@@ -307,15 +282,6 @@ body {
     height: 16px;
 }
 
-/* Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin: 3rem auto;
-    max-width: 800px;
-}
-
 .stat-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -356,24 +322,6 @@ body {
 /* Tools Section */
 .tools-section {
     margin-top: 4rem;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.section-title {
-    font-size: 2rem;
-    color: var(--text-primary);
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-.title-bracket {
-    color: var(--primary);
-    font-size: 2rem;
-    opacity: 0.6;
 }
 
 .section-line {
@@ -488,27 +436,6 @@ body {
     text-align: center;
 }
 
-.footer-content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.footer-section h4 {
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.footer-section p {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    margin: 0.25rem 0;
-}
-
 .footer-line {
     height: 1px;
     background: var(--border);
@@ -539,10 +466,6 @@ body {
     
     .tools-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
     }
 }
 
