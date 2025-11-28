@@ -1,64 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT</title>
-    <link rel="icon" type="image/x-icon" href="https://rohit-dalal.github.io/images/favicon.ico">
-    <link rel="stylesheet" href="main.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>r0hna - Cyberpunk Recon Terminal</title>
+    <link rel="stylesheet" href="https://r0hna.github.io/main.css">
 </head>
+<body>
+    <!-- Animated Background -->
+    <div class="cyber-bg">
+        <div class="cyber-grid"></div>
+        <div class="scan-line"></div>
+    </div>
 
-<body class="body-style">
+    <!-- Navigation -->
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>
+                        <path d="M12 12l-4-2m4 2l4-2m-4 2v4"/>
+                    </svg>
+                </div>
+                <span class="logo-text">r0hna</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <span class="link-icon">🎯</span>
+                    <span>OSINT</span>
+                </a>
+                <a href="github-dork.html" class="nav-link">
+                    <span class="link-icon">💀</span>
+                    <span>GITHUB DORK</span>
+                </a>
+                <a href="google-dork.html" class="nav-link">
+                    <span class="link-icon">🔍</span>
+                    <span>GOOGLE DORK</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <span class="link-icon">📝</span>
+                    <span>REPORTS</span>
+                </a>
+            </div>
 
-    <header class="header-style">
-        <div class="logo">r0hna</div>
-        <nav class="nav-links">
-            <a href="#" class="nav-item">OSINT</a>
-            <a href="#" class="nav-item">Github Dork</a>
-            <a href="#" class="nav-item">Google Dork</a>
-        </nav>
-        <div class="social-icons">
-            <a href="#"><i class="bi bi-person-fill"></i></a>
-            <a href="#"><i class="bi bi-linkedin">https://www.linkedin.com/in/r0hna/</i></a>
-            <a href="#"><i class="bi bi-github">https://github.com/r0hna</i></a>
-        </div>
-    </header>
-
-    <div class="container main-content">
-        <h1 class="main-title">OSINT</h1>
-
-        <div id="input-div" class="mx-auto">
-            <div class="input-group">
-                <input id="user-input" class="form-control domain-input" type="text" required>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <a href="#" class="social-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
+                    </svg>
+                </a>
             </div>
         </div>
+    </nav>
 
-        <div class="dorks-grid-container mt-5">
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="glitch-wrapper">
+                <h1 class="hero-title glitch" data-text="RECON TERMINAL">RECON TERMINAL</h1>
+            </div>
+            <p class="hero-subtitle">
+                <span class="typing-text">INTELLIGENCE GATHERING • RECONNAISSANCE • EXPLOITATION</span>
+            </p>
+            
+            <!-- Terminal Input -->
+            <div class="terminal-box">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">root@r0hna:~#</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-prompt">
+                        <span class="prompt-symbol">&gt;</span>
+                        <input type="text" id="targetInput" placeholder="Enter target domain..." class="terminal-input">
+                        <button class="execute-btn" id="executeBtn">
+                            <span>EXECUTE</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="13 17 18 12 13 7"/>
+                                <polyline points="6 17 11 12 6 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-            <div id="common-div" class="dork-group" data-title="Common Dorks"></div>
-            <div id="top_parameters-div" class="dork-group" data-title="OWASP Parameters"></div>
-            <div id="github-div" class="dork-group" data-title="GitHub Dorks"></div>
-            <div id="social-media-div" class="dork-group" data-title="Social-Media Dorks"></div>
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="toolsCount">25+</div>
+                    <div class="stat-label">RECON TOOLS</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-value">INSTANT</div>
+                    <div class="stat-label">EXECUTION</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔓</div>
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">OPEN SOURCE</div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Tools Section -->
+        <section class="tools-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-bracket">[</span>
+                    <span>RECONNAISSANCE ARSENAL</span>
+                    <span class="title-bracket">]</span>
+                </h2>
+                <div class="section-line"></div>
+            </div>
+
+            <!-- Tool Categories -->
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="all">ALL TOOLS</button>
+                <button class="tab-btn" data-category="network">NETWORK</button>
+                <button class="tab-btn" data-category="domain">DOMAIN</button>
+                <button class="tab-btn" data-category="archive">ARCHIVE</button>
+                <button class="tab-btn" data-category="osint">OSINT</button>
+            </div>
+
+            <!-- Tools Grid -->
+            <div class="tools-grid">
+                <!-- Network Tools -->
+                <div class="tool-card" data-category="network" data-tool="whois">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🌐</div>
+                    <h3 class="tool-name">WHOIS LOOKUP</h3>
+                    <p class="tool-desc">Domain registration intel</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">Info</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="network" data-tool="reverse-ip">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔄</div>
+                    <h3 class="tool-name">REVERSE IP</h3>
+                    <p class="tool-desc">Find co-hosted domains</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">Recon</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="network" data-tool="port-scan">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔓</div>
+                    <h3 class="tool-name">PORT SCANNER</h3>
+                    <p class="tool-desc">Detect open ports</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">Scan</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="network" data-tool="traceroute">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">📡</div>
+                    <h3 class="tool-name">TRACEROUTE</h3>
+                    <p class="tool-desc">Network path analysis</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">Path</span>
+                    </div>
+                </div>
+
+                <!-- Domain Tools -->
+                <div class="tool-card" data-category="domain" data-tool="dns-report">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">📋</div>
+                    <h3 class="tool-name">DNS REPORT</h3>
+                    <p class="tool-desc">Complete DNS analysis</p>
+                    <div class="tool-tags">
+                        <span class="tag">Domain</span>
+                        <span class="tag">DNS</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="domain" data-tool="subdomains">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🎯</div>
+                    <h3 class="tool-name">SUBDOMAIN ENUM</h3>
+                    <p class="tool-desc">Discover subdomains</p>
+                    <div class="tool-tags">
+                        <span class="tag">Domain</span>
+                        <span class="tag">Enum</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="domain" data-tool="dns-history">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">⏱️</div>
+                    <h3 class="tool-name">DNS HISTORY</h3>
+                    <p class="tool-desc">Historical DNS records</p>
+                    <div class="tool-tags">
+                        <span class="tag">Domain</span>
+                        <span class="tag">History</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="domain" data-tool="ssl-cert">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔐</div>
+                    <h3 class="tool-name">SSL/TLS SCAN</h3>
+                    <p class="tool-desc">Certificate analysis</p>
+                    <div class="tool-tags">
+                        <span class="tag">Domain</span>
+                        <span class="tag">SSL</span>
+                    </div>
+                </div>
+
+                <!-- OSINT Tools -->
+                <div class="tool-card" data-category="osint" data-tool="urlscan">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔬</div>
+                    <h3 class="tool-name">URLSCAN.IO</h3>
+                    <p class="tool-desc">Website scanner & analysis</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Scan</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="shodan">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🤖</div>
+                    <h3 class="tool-name">SHODAN</h3>
+                    <p class="tool-desc">IoT search engine</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">IoT</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="censys">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">👁️</div>
+                    <h3 class="tool-name">CENSYS</h3>
+                    <p class="tool-desc">Internet-wide scanner</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Search</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="hunter">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">📧</div>
+                    <h3 class="tool-name">EMAIL HUNTER</h3>
+                    <p class="tool-desc">Find email addresses</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Email</span>
+                    </div>
+                </div>
+
+                <!-- Archive Tools -->
+                <div class="tool-card" data-category="archive" data-tool="wayback">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">⏮️</div>
+                    <h3 class="tool-name">WAYBACK MACHINE</h3>
+                    <p class="tool-desc">Historical snapshots</p>
+                    <div class="tool-tags">
+                        <span class="tag">Archive</span>
+                        <span class="tag">History</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="archive" data-tool="archive-today">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">📦</div>
+                    <h3 class="tool-name">ARCHIVE.TODAY</h3>
+                    <p class="tool-desc">Archive & retrieve pages</p>
+                    <div class="tool-tags">
+                        <span class="tag">Archive</span>
+                        <span class="tag">Save</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="builtwith">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔧</div>
+                    <h3 class="tool-name">BUILTWITH</h3>
+                    <p class="tool-desc">Technology profiler</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Tech</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="wappalyzer">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">⚙️</div>
+                    <h3 class="tool-name">WAPPALYZER</h3>
+                    <p class="tool-desc">Detect technologies</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Stack</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="network" data-tool="securitytrails">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🛡️</div>
+                    <h3 class="tool-name">SECURITYTRAILS</h3>
+                    <p class="tool-desc">Attack surface intel</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">Intel</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="spyse">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🕵️</div>
+                    <h3 class="tool-name">SPYSE</h3>
+                    <p class="tool-desc">Cyber intelligence</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Intel</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="virustotal">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🦠</div>
+                    <h3 class="tool-name">VIRUSTOTAL</h3>
+                    <p class="tool-desc">Malware & threat analysis</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Security</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="threatcrowd">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">👾</div>
+                    <h3 class="tool-name">THREATCROWD</h3>
+                    <p class="tool-desc">Threat intelligence</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Threat</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="domain" data-tool="crtsh">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">📜</div>
+                    <h3 class="tool-name">CRT.SH</h3>
+                    <p class="tool-desc">Certificate search</p>
+                    <div class="tool-tags">
+                        <span class="tag">Domain</span>
+                        <span class="tag">Cert</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="haveibeenpwned">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">💥</div>
+                    <h3 class="tool-name">HAVEIBEENPWNED</h3>
+                    <p class="tool-desc">Breach database</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Breach</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="osint" data-tool="dehashed">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🔓</div>
+                    <h3 class="tool-name">DEHASHED</h3>
+                    <p class="tool-desc">Leaked credentials</p>
+                    <div class="tool-tags">
+                        <span class="tag">OSINT</span>
+                        <span class="tag">Leaks</span>
+                    </div>
+                </div>
+
+                <div class="tool-card" data-category="network" data-tool="asn-lookup">
+                    <div class="card-glow"></div>
+                    <div class="tool-icon">🌍</div>
+                    <h3 class="tool-name">ASN LOOKUP</h3>
+                    <p class="tool-desc">Network ownership</p>
+                    <div class="tool-tags">
+                        <span class="tag">Network</span>
+                        <span class="tag">ASN</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="cyber-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>r0hna RECON v3.0</h4>
+                <p>Advanced OSINT & Reconnaissance Platform</p>
+            </div>
+            <div class="footer-section">
+                <p>⚠️ For authorized security testing only</p>
+                <p>💀 Use responsibly • Stay anonymous • Break nothing</p>
+            </div>
         </div>
-    </div>
+        <div class="footer-line"></div>
+        <p class="footer-copy">© 2025 r0hna</p>
+    </footer>
 
-    <div class="output-container" style="display: none;">
-        <div><h6 class="border-bottom border-top"><i class="bi bi-google"></i> Common Dorks#</h6></div>
-        <div><h6 class="border-bottom border-top"><i class="bi bi-bug-fill"></i> OWASP Parameters#</h6></div>
-        <div><h6 class="border-bottom border-top"><i class="bi bi-github"></i> GitHub Dorks#</h6></div>
-        <div><h6 class="border-bottom border-top"><i class="bi bi-menu-up"></i> Social-Media Dorks#</h6></div>
-    </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="main.js"></script>
+    <script src="https://r0hna.github.io/main.js"></script>
 </body>
-
 </html>
