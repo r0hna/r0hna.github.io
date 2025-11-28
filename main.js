@@ -1,133 +1,285 @@
-// Get DOM elements once
-const userInput = document.getElementById('user-input');
-const commonDiv = document.getElementById('common-div');
-const githubDiv = document.getElementById('github-div');
-const topParametersDiv = document.getElementById('top_parameters-div');
-const socialMediaDiv = document.getElementById('social-media-div');
+// Theme Toggle
+const themeToggle = document.getElementById('themeToggle');
+const htmlElement = document.documentElement;
 
-/**
- * Creates an HTML anchor tag for a dork button.
- * @param {string} url The target URL for the dork query.
- * @param {string} text The display text for the button.
- * @param {string} colorClass The Bootstrap class (e.g., 'btn-outline-danger').
- * @returns {string} The complete HTML string for the button.
- */
-function createButton(url, text, colorClass) {
-    // We use m-0 since the grid handles spacing
-    return `<a class="btn ${colorClass} m-0" target="_blank" href="${url}">${text}</a>`;
-}
-
-/**
- * Generates and updates all dork buttons based on the current user input.
- */
-function updateDorks() {
-    const domain = userInput.value.trim();
-    // 'domain' now holds the raw input (e.g., 'testfire.net' or 'https://target.com/test')
-
-    // Clear previous results
-    commonDiv.innerHTML = '';
-    topParametersDiv.innerHTML = '';
-    githubDiv.innerHTML = '';
-    socialMediaDiv.innerHTML = '';
-
-    // Only generate dorks if there is input
-    if (domain.length > 0) {
-        
-        // --- Common Dorks (using btn-outline-danger class) ---
-        let commonDorks = [
-            // Direct file access needs a hardcoded protocol, assuming HTTPS is best effort.
-            createButton(`https://${domain}/robots.txt`, 'robots.txt', 'btn-outline-danger'),
-            createButton(`https://${domain}/security.txt`, 'security.txt', 'btn-outline-danger'),
-            // Google dorks use the 'site:' operator, which handles protocols well.
-            createButton(`https://www.google.com/search?q=site:*.*${domain}+OR+site:*.${domain}+OR+site:..*.*${domain}`, 'Subdomains', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"index+of"+inurl:ftp+OR+inurl:ssh`, 'Exposed FTP/SSH', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"index+of"+OR+intitle:"index+of+/"`, 'Dir Listening', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+ext:doc+OR+ext:docx+OR+ext:pdf+OR+ext:xlsx`, 'Exposed Documents', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:%22%69%6e%64%65%78%20%6f%66%22%20%2f%65%74%63%2f%70%61%73%73%77%64`, 'Exposed Usernames', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:%22%69%6e%64%65%78%20%6f%66%22%20%2f%65%74%63%2f%73%68%61%64%6f%77`, 'Exposed Passwords', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+%69%6e%75%72%6c%3a%3f%71%3d%20%7c%20%69%6e%75%72%6c%3a%3f%73%3d%20%7c%20%69%6e%75%72%6c%3a%3f%73%65%61%72%63%68%3d%20%7c%20%69%6e%75%72%6c%3a%3f%69%64%3d%20%7c%20%69%6e%75%72%6c%3a%3f%70%69%64%3d%20%7c%20%69%6e%75%72%6c%3a%3f%63%61%74%65%67%6f%72%79%3d`, 'Parameter URLs', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+ext:log+OR+ext:txt+OR+ext:conf+OR+ext:env+OR+ext:sh+OR+ext:bak+OR+ext:git+OR+ext:htaccess`, 'Interesting Files', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q="${domain}"+site:pastebin.com+OR+site:jsfiddle.net+OR+site:codepen.io`, 'Code Leaks', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+%69%6e%75%72%6c%3a%63%6f%6e%66%69%67%20%7c%20%69%6e%75%72%6c%3a%65%6e%76%20%7c%20%65%78%74%3a%78%6d%6c%20%7c%20%65%78%74%3a%63%6f%6e%66%20%7c%20%65%78%74%3a%74%78%74`, 'Config Files', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl%3A%22email%3D%22%20OR%20inurl%3A%22password%3D%22%20OR%20inurl%3A%22secret%3D%22%20OR%20inurl%3A%22session%3D%22`, 'Juicy URLs', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+ext%3Alog%20%7C%20ext%3Atxt%20%7C%20ext%3Aconf%20%7C%20ext%3Acnf%20%7C%20ext%3Aini%20%7C%20ext%3Aenv%20%7C%20ext%3Abak%20%7C%20ext%3Agit`, 'Juicy Extensions', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:"upload+file"+OR+inurl:upload`, 'Upload Page', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"Apache+HTTP+Server"+OR+inurl:server-status`, 'Apache Server Status', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"ngnix"+OR+intitle:"Welcome+to+ngnix!"+OR+inurl:ngnix_status`, 'Ngnix Server Status', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:/phpMyAdmin/index.php+intitle:phpmyadmin`, 'PhpMyAdmin Page', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"index+of"+inurl:/wp-content`, 'Wordpress Dir', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intitle:"index+of+/"+inurl:/wp-content/plugins`, 'Wordpress Plugins', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:"admin+Login"+OR+intitle:"Admin+Panel"`, 'Wordpress Admin', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:login+OR+inurl:logon+OR+inurl:sign-in`, 'Login Page', 'btn-outline-danger'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:apidocs+OR+inurl:swagger+OR+inurl:api-explorer`, 'API Doc', 'btn-outline-danger'),
-        ];
-        commonDiv.innerHTML = commonDorks.join('');
-
-        // --- OWASP Parameters (using btn-outline-info class) ---
-        let owaspDorks = [
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:"redirect="+OR+inurl:"return="+OR+inurl:"next="+OR+inurl:"dest="`, 'Open Redirects', 'btn-outline-info'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:q=+OR+inurl:s=+OR+inurl:search=+OR+inurl:query=+OR+inurl:keyword=`, 'XSS Prone Parameters', 'btn-outline-info'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl%3Aid%3D%20OR%20inurl%3Apid%3D%20OR%20inurl%3Acategory%3D%20OR%20inurl%3Acat%3D`, 'SQLi Prone Parameters', 'btn-outline-info'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:http+OR+inurl:url=+OR+inurl:path=+OR+inurl:dest=+OR+inurl:page=`, 'SSRF Prone Parameters', 'btn-outline-info'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:include+OR+inurl:dir+OR+inurl:file=+OR+inurl:folder=+OR+inurl:conf=`, 'LFI Prone Parameters', 'btn-outline-info'),
-            createButton(`https://www.google.com/search?q=site:${domain}+inurl:cmd+OR+inurl:exec=+OR+inurl:query=+OR+inurl:code=+OR+inurl:run=`, 'RCE Prone Parameters', 'btn-outline-info'),
-        ];
-        topParametersDiv.innerHTML = owaspDorks.join('');
-
-        // --- Github Dorks (using btn-outline-primary class) ---
-        let githubDorks = [
-            createButton(`https://github.com/search?q=%22${domain}%22+password&type=Code`, 'Password', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+npmrc%20_auth&type=Code`, 'npmrc _auth', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+dockercfg&type=Code`, 'dockercfg', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+pem%20private&type=Code`, 'pem private', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+id_rsa&type=Code`, 'id_rsa', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+aws_access_key_id&type=Code`, 'aws_access_key_id', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+s3cfg&type=Code`, 's3cfg', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+htpasswd&type=Code`, 'htpasswd', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+git-credentials&type=Code`, 'Git-credentials', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+bashrc%20password&type=Code`, 'bashrc password', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+sshd_config&type=Code`, 'sshd_config', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+xoxp%20OR%20xoxb%20OR%20xoxa&type=Code`, 'Slack Tokens', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+SECRET_KEY&type=Code`, 'Secret Key', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+client_secret&type=Code`, 'client_secret', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+github_token&type=Code`, 'github_token', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+api_key&type=Code`, 'api_key', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+FTP&type=Code`, 'FTP Credentials', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+app_secret&type=Code`, 'app_secret', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+passwd&type=Code`, 'passwd file', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+.env&type=Code`, '.env file', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+mysql&type=Code`, 'mysql credentials', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+credentials&type=Code`, 'credentials', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+PWD&type=Code`, 'PWD Variable', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+.bash_history&type=Code`, '.bash_history', 'btn-outline-primary'),
-            createButton(`https://github.com/search?q=%22${domain}%22+secrets&type=Code`, 'secrets', 'btn-outline-primary'),
-        ];
-        githubDiv.innerHTML = githubDorks.join('');
-
-        // --- Social Media Dorks (using btn-outline-secondary class) ---
-        let socialDorks = [
-            createButton(`https://www.google.com/search?q=site:linkedin.com+"${domain}"`, 'LinkedIn', 'btn-outline-secondary'),
-            createButton(`https://www.google.com/search?q=site:facebook.com+"${domain}"`, 'Facebook', 'btn-outline-secondary'),
-            createButton(`https://www.google.com/search?q=site:${domain}+intext:@gmail.com+OR+intext:@yahoo.com`, 'eMail Addresses', 'btn-outline-secondary'),
-        ];
-        socialMediaDiv.innerHTML = socialDorks.join('');
-    }
-}
-
-// --- Event Listener: Update Dorks on Input Change ---
-// Use 'input' event for immediate updates as the user types
-userInput.addEventListener('input', updateDorks);
-
-// --- Initialization: Generate Dorks with placeholder on load ---
-window.onload = function() {
-    // Set placeholder value and generate dorks
-    userInput.value = userInput.placeholder; 
-    updateDorks();
-
-    // Clear the input after initial load so the user can start typing immediately
+themeToggle.addEventListener('click', () => {
+    // Simple visual feedback for now
+    themeToggle.style.transform = 'rotate(360deg)';
     setTimeout(() => {
-        userInput.value = '';
-        // Clear the generated buttons now that the input is empty
-        updateDorks();
-    }, 50);
+        themeToggle.style.transform = 'rotate(0deg)';
+    }, 300);
+});
+
+// Terminal Input & Execute
+const targetInput = document.getElementById('targetInput');
+const executeBtn = document.getElementById('executeBtn');
+
+executeBtn.addEventListener('click', () => {
+    const target = targetInput.value.trim();
+    if (target) {
+        // Glitch effect
+        executeBtn.style.animation = 'glitchBtn 0.3s';
+        setTimeout(() => {
+            executeBtn.style.animation = '';
+        }, 300);
+        
+        console.log('Target locked:', target);
+        // Store target for tool execution
+        localStorage.setItem('currentTarget', target);
+        
+        // Visual feedback
+        showNotification('Target locked: ' + target);
+    } else {
+        showNotification('⚠️ Enter a target domain', 'error');
+    }
+});
+
+targetInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        executeBtn.click();
+    }
+});
+
+// Notification System
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: ${type === 'error' ? '#ff0040' : 'linear-gradient(135deg, #ff00ff, #00ffff)'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        font-family: 'Share Tech Mono', monospace;
+        font-weight: bold;
+        box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
+
+// Category Filtering
+const categoryTabs = document.querySelectorAll('.tab-btn');
+const toolCards = document.querySelectorAll('.tool-card');
+
+categoryTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const category = tab.dataset.category;
+        
+        // Update active tab
+        categoryTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Filter tools
+        toolCards.forEach(card => {
+            if (category === 'all' || card.dataset.category === category) {
+                card.style.display = 'block';
+                card.style.animation = 'fadeIn 0.3s ease';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Tool Card Click Handler
+const toolUrlMap = {
+    'whois': 'https://whois.domaintools.com/{target}',
+    'reverse-ip': 'https://viewdns.info/reverseip/?host={target}',
+    'port-scan': 'https://www.yougetsignal.com/tools/open-ports/',
+    'traceroute': 'https://www.traceroute-online.com/{target}',
+    'dns-report': 'https://dnschecker.org/#A/{target}',
+    'subdomains': 'https://dnsdumpster.com/',
+    'dns-history': 'https://securitytrails.com/domain/{target}/history/a',
+    'ssl-cert': 'https://www.ssllabs.com/ssltest/analyze.html?d={target}',
+    'urlscan': 'https://urlscan.io/search/#{target}',
+    'shodan': 'https://www.shodan.io/search?query={target}',
+    'censys': 'https://search.censys.io/search?resource=hosts&q={target}',
+    'hunter': 'https://hunter.io/search/{target}',
+    'wayback': 'https://web.archive.org/web/*/{target}',
+    'archive-today': 'https://archive.ph/{target}',
+    'builtwith': 'https://builtwith.com/{target}',
+    'wappalyzer': 'https://www.wappalyzer.com/lookup/{target}',
+    'securitytrails': 'https://securitytrails.com/domain/{target}/dns',
+    'spyse': 'https://spyse.com/target/domain/{target}',
+    'virustotal': 'https://www.virustotal.com/gui/domain/{target}',
+    'threatcrowd': 'https://www.threatcrowd.org/domain.php?domain={target}',
+    'crtsh': 'https://crt.sh/?q={target}',
+    'haveibeenpwned': 'https://haveibeenpwned.com/DomainSearch',
+    'dehashed': 'https://dehashed.com/search?query={target}',
+    'asn-lookup': 'https://ipinfo.io/AS{target}'
+};
+
+toolCards.forEach(card => {
+    card.addEventListener('click', () => {
+        const tool = card.dataset.tool;
+        const target = localStorage.getItem('currentTarget') || targetInput.value.trim();
+        
+        if (!target) {
+            showNotification('⚠️ Set a target first!', 'error');
+            targetInput.focus();
+            return;
+        }
+        
+        const url = toolUrlMap[tool];
+        if (url) {
+            const finalUrl = url.replace('{target}', target);
+            window.open(finalUrl, '_blank');
+            showNotification(`🎯 Launching ${card.querySelector('.tool-name').textContent}`);
+        } else {
+            showNotification('⚠️ Tool not configured', 'error');
+        }
+    });
+    
+    // Keyboard accessibility
+    card.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+        }
+    });
+    
+    card.setAttribute('tabindex', '0');
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes glitchBtn {
+        0%, 100% { transform: translate(0); }
+        25% { transform: translate(-2px, 2px); }
+        50% { transform: translate(2px, -2px); }
+        75% { transform: translate(-2px, -2px); }
+    }
+`;
+document.head.appendChild(style);
+
+// Scan line animation randomization
+const scanLine = document.querySelector('.scan-line');
+setInterval(() => {
+    scanLine.style.animationDuration = (3 + Math.random() * 2) + 's';
+}, 5000);
+
+// Matrix rain effect (optional enhancement)
+function createMatrixRain() {
+    const canvas = document.createElement('canvas');
+    canvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.1;
+        pointer-events: none;
+    `;
+    document.querySelector('.cyber-bg').appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const chars = '01アイウエオカキクケコサシスセソタチツテト';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+    
+    function draw() {
+        ctx.fillStyle = 'rgba(10, 0, 21, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#ff00ff';
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+    
+    setInterval(draw, 50);
+}
+
+// Initialize matrix rain
+createMatrixRain();
+
+// Window resize handler
+window.addEventListener('resize', () => {
+    const canvas = document.querySelector('.cyber-bg canvas');
+    if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
+
+// Glitch effect on tool count
+const toolsCount = document.getElementById('toolsCount');
+if (toolsCount) {
+    setInterval(() => {
+        const original = toolsCount.textContent;
+        toolsCount.textContent = Math.floor(Math.random() * 99) + '+';
+        setTimeout(() => {
+            toolsCount.textContent = original;
+        }, 50);
+    }, 5000);
+}
+
+// Console Easter Egg
+console.log('%c⚡ LOPSEQ RECON TERMINAL v3.0 ⚡', 'color: #ff00ff; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #ff00ff;');
+console.log('%c💀 System Status: ONLINE', 'color: #00ffff; font-size: 14px;');
+console.log('%c🎯 All systems operational', 'color: #00ffff; font-size: 14px;');
+console.log('%c⚠️  For authorized security testing only', 'color: #ff0040; font-size: 12px;');
+
+// Prevent context menu on tool cards for hacker feel
+toolCards.forEach(card => {
+    card.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        showNotification('🚫 Right-click disabled', 'error');
+    });
+});
