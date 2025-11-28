@@ -436,12 +436,6 @@ body {
     text-align: center;
 }
 
-.footer-line {
-    height: 1px;
-    background: var(--border);
-    margin: 1.5rem 0;
-}
-
 .footer-copy {
     color: var(--text-secondary);
     font-size: 0.875rem;
